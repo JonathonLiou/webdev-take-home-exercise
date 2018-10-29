@@ -40,3 +40,48 @@ a {
   font-family: var(--font-serif);
   text-align: center;
 }
+
+
+
+/* My CSS */
+img {
+	opacity: 0;
+	
+	-webkit-transition: opacity 600ms ease;
+	-moz-transition: opacity 600ms ease;
+	-ms-transition: opacity 600ms ease;
+	-o-transition: opacity 600ms ease;
+	transition: opacity 600ms ease;
+}
+
+/* Justified Image Gallery */
+.justified-gallery {
+	display: flex;
+	flex-wrap: wrap;
+	margin: -2.5px;
+	overflow: hidden;
+}
+.justified-gallery:after {
+	content: '';
+	flex-grow: 999999999;
+	height: 0;
+	min-width: 200px;
+}
+.justified-gallery > * {
+	display: block;
+	flex-grow: 1;
+	height: 200px;
+	margin: 2.5px;
+	/* max-width: 48%; handset only */
+	position: relative;
+}
+.justified-gallery > * > img {
+	height: 200px;
+	max-width: 100%;
+	min-width: 100%;
+	object-fit: cover;
+	vertical-align: bottom;
+}
+.justified-gallery.justified-gallery-margin {
+	margin: 2.5px;
+}

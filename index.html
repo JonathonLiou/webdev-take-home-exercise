@@ -1,1 +1,128 @@
 <!-- Put your final HTML here -->
+<head>
+	<meta charset="utf-8" />
+	<meta name="description" content="We love dogs! ADD MORE TO ME LATER">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Asana | Pet Adoption</title>
+	<!--link rel="icon" href="./favicon.png"-->
+	<link rel="stylesheet" href="./assets/app.css" type="text/css" />
+	<!--script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script-->
+
+	<!-- imports ; not cross-browser friendly -->
+
+	<!--script>
+		$(function() {
+			$("#header").load("./assets/snippets/header.html");
+			$("#footer").load("./assets/snippets/footer.html");
+		});
+	</script-->
+	
+	<!--https://www.w3schools.com/howto/howto_html_include.asp-->
+	<script>
+		function includeHTML() {
+			var z, i, elmnt, file, xhttp;
+			/*loop through a collection of all HTML elements:*/
+			z = document.getElementsByTagName("*");
+			for (i = 0; i < z.length; i++) {
+				elmnt = z[i];
+				/*search for elements with a certain atrribute:*/
+				file = elmnt.getAttribute("include");
+				if (file) {
+					/*make an HTTP request using the attribute value as the file name:*/
+					xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4) {
+							if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+							if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+							/*remove the attribute, and call this function once more:*/
+							elmnt.removeAttribute("include");
+							includeHTML();
+						}
+					} 
+					xhttp.open("GET", file, true);
+					xhttp.send();
+					/*exit the function:*/
+					return;
+				}
+			}
+		}
+	</script>
+
+	<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<!--[if lte IE 7]>
+		<script src="js/IE8.js" type="text/javascript"></script><![endif]-->
+	<!--[if lt IE 7]>
+		<link rel="stylesheet" type="text/css" media="all" href="css/ie6.css"/><![endif]-->
+
+</head>
+
+<body>
+	<div style="height:100%;left:-100%;position:absolute;width:100%;z-index: 1;"></div>
+	
+	<!--div id="header"></div>
+	<div id="footer"></div-->
+	
+	<div include="./assets/snippets/header.html"></div>
+	
+	<div id="list" class="justified-gallery justified-gallery-margin"></div>
+	
+	<div include="./assets/snippets/footer.html"></div>
+	
+	<script>
+		includeHTML();
+		
+		var dogsCount = 0
+		
+		function fadeImage(dogCount, imageCount, index) {
+			setTimeout(function() {
+				document.getElementById("dog-" + (dogCount - imageCount + index)).style.opacity = 1;
+			}, 150 * index);
+		}
+		
+		function showImages(imageCount) {
+			for (var i = 1; i <= imageCount; i++) {
+				fadeImage(dogsCount, imageCount, i);
+			}
+		}
+		
+		function fetchDogs() {
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var dogs = JSON.parse(this.responseText).dogs;
+					var list = document.getElementById("list");
+					var loadedCount = 0;
+					
+					for (var i = 0; i < dogs.length; i++) {
+						dogsCount++;
+
+						var img = document.createElement("img");
+						img.onload = function() {
+							loadedCount++
+							if (loadedCount == dogs.length) {
+								showImages(dogs.length);
+							}
+						};
+
+						img.src = "./" + dogs[i].image;
+						img.alt = "hello";
+						img.id = "dog-" + dogsCount;
+						
+						var div = document.createElement('div');
+						div.appendChild(img);
+						div.classList.add('theimage');
+
+						list.appendChild(div);
+					};
+				}
+			};
+			
+			xmlhttp.open("GET", "./assets/data/dogs.json", true);
+			xmlhttp.overrideMimeType("text/plain");
+			xmlhttp.send();
+		}
+		
+		fetchDogs();
+	</script>
+</body>
