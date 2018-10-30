@@ -44,7 +44,45 @@ a {
 
 
 /* My CSS */
-img {
+
+
+
+/* https://projects.lukehaas.me/css-loaders/ */
+
+
+
+.ease {
+	-webkit-transition: all 600ms ease;
+	-moz-transition: all 600ms ease;
+	-ms-transition: all 600ms ease;
+	-o-transition: all 600ms ease;
+	transition: all 600ms ease;
+}
+
+#panel {
+	background: white;
+	height: 100%;
+	left: 0;
+	position: fixed;
+	width: 100%;
+	z-index: 1;
+	
+	-webkit-transition: left 600ms ease;
+	-moz-transition: left 600ms ease;
+	-ms-transition: left 600ms ease;
+	-o-transition: left 600ms ease;
+	transition: left 600ms ease;
+}
+#panel.closed {
+	left: -100%;
+}
+
+#main-content {
+	height: 100%;
+	overflow: auto;
+}
+
+.imgContainer img {
 	opacity: 0;
 	
 	-webkit-transition: opacity 600ms ease;

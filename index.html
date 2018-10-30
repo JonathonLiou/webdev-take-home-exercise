@@ -4,7 +4,7 @@
 	<meta name="description" content="We love dogs! ADD MORE TO ME LATER">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>Asana | Pet Adoption</title>
-	<!--link rel="icon" href="./favicon.png"-->
+	<link rel="icon" href="https://d1gwm4cf8hecp4.cloudfront.net/images/favicons/favicon-16x16.png">
 	<link rel="stylesheet" href="./assets/app.css" type="text/css" />
 	<!--script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script-->
 
@@ -58,19 +58,51 @@
 </head>
 
 <body>
-	<div style="height:100%;left:-100%;position:absolute;width:100%;z-index: 1;"></div>
+	<div id="panel" class="closed" style="border-right: 1px solid #d8d8d8;">
+		<img id="fullscreen" alt="Full Screen" style="max-width: 100%; max-height: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+		<!--div onclick="togglePanel()" style="position:absolute;right:0;height:100%;width:48px;background:#796eff;">
+		
+			<div style="position:absolute; top: 50%;left:50%;transform:translate(-50%, -50%);">❬</div>
+		
+		</div-->
+		
+		<!--tap to close?-->
+		
+		<!--div onclick="togglePanel()" style="top: 0;position:absolute;">➜</div-->
+		
+		<!--div style="top: 0; height: 48px; width:100%;position:absolute;background:white;border-bottom:1px solid #dadada;">
+			<div onclick="togglePanel()">X</div>
+		</div>
+		
+		<div style="bottom: 0; height: 48px; width:100%;position:absolute;background:white;border-top:1px solid #dadada;"></div-->
+	</div>
 	
 	<!--div id="header"></div>
 	<div id="footer"></div-->
 	
-	<div include="./assets/snippets/header.html"></div>
-	
-	<div id="list" class="justified-gallery justified-gallery-margin"></div>
-	
-	<div include="./assets/snippets/footer.html"></div>
+	<div id="main-content">
+		
+		
+		<div style="background:rgb(230,228,231);">
+			
+			<img src="https://cdn.pixabay.com/photo/2017/08/18/16/13/dog-2655463_960_720.jpg" alt="HERO" style="height:100%;margin-left:auto;display:block;"/>
+		</div>
+		
+		<!--div include="./assets/snippets/header.html"></div-->
+		<div id="list" class="justified-gallery justified-gallery-margin"></div>
+		<div style="text-align: center;" onclick="fetchDogs()">See More</div>
+		<div include="./assets/snippets/footer.html"></div>
+	</div>
 	
 	<script>
 		includeHTML();
+		
+		function togglePanel(element) {
+			if (element) {
+				document.getElementById('fullscreen').src = element.firstElementChild.src;
+			}
+			document.getElementById('panel').classList.toggle('closed');
+		}
 		
 		var dogsCount = 0
 		
@@ -106,12 +138,13 @@
 						};
 
 						img.src = "./" + dogs[i].image;
-						img.alt = "hello";
+						img.alt = "Dog " + dogsCount;
 						img.id = "dog-" + dogsCount;
 						
 						var div = document.createElement('div');
 						div.appendChild(img);
-						div.classList.add('theimage');
+						div.classList.add('imgContainer');
+						div.onclick = function(){togglePanel(this)};
 
 						list.appendChild(div);
 					};
