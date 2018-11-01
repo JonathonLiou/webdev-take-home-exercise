@@ -233,6 +233,8 @@ a {
 	flex-grow: 1;
 	height: 200px;
 	margin: 2.5px;
+	max-width: calc(48%); /* fallback for mobile browsers with calc() issues */
+	max-width: calc(50% - 5px);
 	position: relative;
 }
 .justified-gallery > * > img {
@@ -270,10 +272,5 @@ a {
 	.banner {
 		padding-left: 32px;
 		padding-right: 32px;
-	}
-	
-	.justified-gallery > * {
-		max-width: calc(48%); /* fallback for mobile browsers with calc() issues */
-		max-width: calc(50% - 5px);
 	}
 }
