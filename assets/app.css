@@ -1,7 +1,7 @@
 /* Globals */
 :root {
-  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-serif: Georgia, serif;
+  --font-sans: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: "Crimson Text", Georgia, serif;
   --color-secondary: #333;
   --color-link: #635ac7;
 
@@ -20,23 +20,26 @@ a {
 
 /* Global Header */
 .global-header {
-  padding-bottom: 2rem;
+  /*padding-bottom: 2rem;
   padding-top: 2rem;
-  text-align: center;
+  text-align: center;*/
+	overflow: hidden;
 }
 
 /* Header Quote */
 .header-quote {
   color: var(--color);
   font-family: var(--font-serif);
-  margin-left: auto;
-  margin-right: auto;
+  /*margin-left: auto;
+  margin-right: auto;*/
+	margin: 0;
   max-width: 460px;
 }
 
 /* Global Footer */
 .global-footer {
-  color: var(--color);
+	background: #151b26;
+  color: white;
   font-family: var(--font-serif);
   text-align: center;
 }
@@ -61,6 +64,7 @@ a {
 
 #panel {
 	background: white;
+	/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
 	height: 100%;
 	left: 0;
 	position: fixed;
@@ -74,7 +78,29 @@ a {
 	transition: left 600ms ease;
 }
 #panel.closed {
+	/*box-shadow: none;*/
 	left: -100%;
+}
+
+.close-button {
+	border-radius: 50%;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	height: 48px;
+	width: 48px;
+}
+
+.chevron::before {
+	border-style: solid;
+	border-width: 0.25em 0.25em 0 0;
+	content: '';
+	display: inline-block;
+	height: 0.45em;
+	left: 0.25em;
+	position: relative;
+	top: 0.15em;
+	transform: rotate(-135deg);
+	vertical-align: top;
+	width: 0.45em;
 }
 
 #main-content {
