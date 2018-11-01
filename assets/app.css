@@ -1,39 +1,65 @@
 /* Globals */
 :root {
   --font-sans: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-serif: "Crimson Text", Georgia, serif;
+  /*--font-serif: "Crimson Text", Georgia, serif; serif font removed for consistency within small single page site */
   --color-secondary: #333;
   --color-link: #635ac7;
-
+	
+	font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif; /* fallback for IE */
   font-family: var(--font-sans);
   font-weight: 300;
   line-height: 1.5;
 }
 
 body {
+	color: #333; /* fallback for IE */
+	color: var(--color-secondary: #333);
   margin: 0;
 }
 
+h1 {
+	text-transform: capitalize;
+	font-weight: 300;
+}
+
+h3 {
+	font-size: 1em;
+	font-weight: 300;
+}
+
 a {
+	color: #635ac7; /* fallback for IE */
   color: var(--color-link);
+	font-weight: normal;
+	text-decoration: none;
 }
 
 /* Global Header */
 .global-header {
 	background: rgb(230, 228, 231);
-  /*padding-bottom: 2rem;
-  padding-top: 2rem;
-  text-align: center;*/
-	text-align: left;
+	height: 60%;
 	overflow: hidden;
+	position: relative;
+	text-align: left;
+}
+
+/* Global Header Content Container */
+.global-header-content-container {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 100%;
+}
+
+/* Global Header Content */
+.global-header-content {
+	margin: 0 auto;
+	max-width: 768px;
+	padding: 0 64px;
 }
 
 /* Header Quote */
 .header-quote {
-  color: var(--color);
-  font-family: var(--font-serif);
-  /*margin-left: auto;
-  margin-right: auto;*/
 	margin: 0;
   max-width: 460px;
 }
@@ -47,16 +73,7 @@ a {
   text-align: center;
 }
 
-
-
-/* My CSS */
-
-
-
-/* https://projects.lukehaas.me/css-loaders/ */
-
-
-
+/* Utility Classes */
 .ease-fast {
 	-webkit-transition: all 200ms ease;
 	-moz-transition: all 200ms ease;
@@ -71,41 +88,63 @@ a {
 	-o-transition: all 600ms ease;
 	transition: all 600ms ease;
 }
+.center {
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
 
-#toolbar {
+#menu-bar {
 	background: transparent;
 	box-shadow: none;
+	padding: 20px;
+	position: fixed;
+	width: 100%;
+	z-index: 1;
 }
-#toolbar.scroll {
+#menu-bar.scrolled {
 	background: white;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.1);
 }
+#menu-bar > * {
+	display: inline-block;
+}
 
 #hero-image {
+	display: block;
+	height: 100%;
 	margin-left: 48%;
+	position: absolute;
+}
+#hero-gradient {
+	background: rgb(238, 236, 239);
+	float: right;
+	height: 100%;
+	position: absolute;
+	right: 0;
+	width: 50%;
 }
 
 #panel {
 	background: white;
-	/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+	border-right: 1px solid #d8d8d8;
 	height: 100%;
 	left: 0;
 	position: fixed;
 	width: 100%;
 	z-index: 2;
-	
-	-webkit-transition: left 600ms ease;
-	-moz-transition: left 600ms ease;
-	-ms-transition: left 600ms ease;
-	-o-transition: left 600ms ease;
-	transition: left 600ms ease;
 }
 #panel.closed {
-	/*box-shadow: none;*/
 	left: -100%;
 }
 
-.close-button {
+#panel .button {
+	top: 0;
+	position: absolute;
+}
+
+.button {
 	background: white;
 	border-radius: 50%;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
@@ -113,19 +152,12 @@ a {
 	margin: 24px;
 	width: 54px;
 }
-.close-button:hover {
+.button:hover {
 	cursor: pointer;
-	/*height: 52px;
-	margin: 28px;
-	width: 52px;*/
 }
-.close-button:hover .chevron {
+.button:hover .chevron {
 	margin: 14px 13px;
-}/*
-.close-button:hover .chevron::before {
-	height: 16px;
-	width: 16px;
-}*/
+}
 
 .chevron {
 	margin: 14px 18px;
@@ -145,23 +177,34 @@ a {
 	width: 12px;
 }
 
-#main-content {
-	height: 100%;
+#dog-lightbox {
+	max-height: 100%;
+	max-width: 100%;
 }
 
-.imgContainer:hover {
+#main-content {
+	height: 100%;
+	text-align: center;
+	width: 100%; 
+}
+
+.banner {
+	color: white;
+	background: #222b37;
+	padding: 8px 64px;
+}
+
+#dogs-gallery + a {
+	display: block;
+	margin-bottom: 32px;
+}
+.dog:hover {
 	cursor: pointer;
 	opacity: 0.8;
 }
 
-.imgContainer img {
+.dog img {
 	opacity: 0;
-	
-	-webkit-transition: opacity 600ms ease;
-	-moz-transition: opacity 600ms ease;
-	-ms-transition: opacity 600ms ease;
-	-o-transition: opacity 600ms ease;
-	transition: opacity 600ms ease;
 }
 
 /* Justified Image Gallery */
@@ -212,7 +255,7 @@ a {
 /* Handset */
 @media only screen and (max-width : 520px) {
 	.justified-gallery > * {
-		max-width: calc(48%); /* fallback for mobile browsers with known calc issues */
+		max-width: calc(48%); /* fallback for mobile browsers with calc() issues */
 		max-width: calc(50% - 5px);
 	}
 }
