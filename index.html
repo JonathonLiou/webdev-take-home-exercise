@@ -1,170 +1,173 @@
-<head>
-	<meta charset="utf-8" />
-	<meta name="description" content="Asana Adoption Agency is a proud partner of [shelter name] located in San Francisco, California, with over 2000 pets looking for a new place to call home. Additional description of puppies, kitties, and other SEO friendly words.">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Adopt a puppy at Asana Pet Adoption Agency today.</title>
-	<link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400" rel="stylesheet"> 
-	<link rel="icon" href="https://d1gwm4cf8hecp4.cloudfront.net/images/favicons/favicon-16x16.png">
-	<link rel="stylesheet" href="./assets/app.css" type="text/css" />
-</head>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="description" content="Asana Adoption Agency is a proud partner of [shelter name] located in San Francisco, California, with over 2000 pets looking for a new place to call home. Additional description of puppies, kitties, and other SEO friendly words.">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title>Adopt a puppy at Asana Pet Adoption Agency today.</title>
+		<link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400" rel="stylesheet"> 
+		<link rel="icon" href="https://d1gwm4cf8hecp4.cloudfront.net/images/favicons/favicon-16x16.png">
+		<link rel="stylesheet" href="./assets/app.css" type="text/css" />
+	</head>
 
-<body>
-	
-	<!-- Full Screen Image Panel -->
-	<div id="panel" class="closed ease">
-		<img id="dog-full-screen" class="center"/>		
-		<div class="button" onclick="togglePanel()">
-			<div class="chevron ease-fast"></div>
+	<body>
+
+		<!-- Full Screen Image Panel -->
+		<div id="panel" class="closed ease">
+			<img id="dog-full-screen" class="center"/>		
+			<div class="button" role="button" onclick="togglePanel()">
+				<div class="chevron ease-fast"></div>
+			</div>
 		</div>
-	</div>
-	
-	<!-- Main Content -->
-	<div id="main-content" class="ease" style="opacity: 0;">
-		
-		<div include="./assets/snippets/header.html"></div>
-		
-		<div class="banner">
-			<h3>Asana is a proud partner of [SHELTER NAME] with over 2000 pets looking for a new place to call home.</h3>
+
+		<!-- Main Content -->
+		<div id="main-content" class="ease" style="opacity: 0;">
+
+			<div include="./assets/snippets/header.html"></div>
+
+			<div class="banner">
+				<h3>Asana is a proud partner of [SHELTER NAME] with over 2000 pets looking for a new place to call home.</h3>
+			</div>
+
+			<div id="dogs-gallery" class="justified-gallery justified-gallery-margin"></div>
+			<a href="javascript:void(0);" onclick="fetchDogs()" role="button">See More</a>
+
+			<div include="./assets/snippets/footer.html"></div>
+
 		</div>
-		
-		<div id="dogs-gallery" class="justified-gallery justified-gallery-margin"></div>
-		<a href="javascript:void(0);" onclick="fetchDogs()" role="button">See More</a>
-		
-		<div include="./assets/snippets/footer.html"></div>
-		
-	</div>
-	
-	<!-- Can be moved to main.js; left in index.html for readability in evaluation -->
-	<script>
-		var dogsCount = 0
-		
-		/* Include HTML components from specified filepath */
-		function includeHTML() {
-			var z, i, elmnt, file, xhttp;
-			/* loop through a collection of all HTML elements */
-			
-			z = document.getElementsByTagName('*');
-			for (i = 0; i < z.length; i++) {
-				elmnt = z[i];
-				
-				/* search for elements with the "include" atrribute */
-				file = elmnt.getAttribute('include');
-				if (file) {
-					/* make an HTTP request using the attribute value as the file name */
-					xhttp = new XMLHttpRequest();
-					xhttp.onreadystatechange = function() {
-						if (this.readyState == 4) {
-							if (this.status == 200) {elmnt.innerHTML = this.responseText;}
-							if (this.status == 404) {elmnt.innerHTML = 'Page not found.';}
-							
-							/* remove the attribute, and call this function once more */
-							elmnt.removeAttribute('include');
-							includeHTML();
-						}
-					} 
-					
-					xhttp.open('GET', file, true);
-					xhttp.send();
-					
-					/* exit the function */
-					return;
-				}
-			}
-		}
-		
-		/* Fetch dogs data on header load */
-		function onHeaderLoad() {
-			document.getElementById('main-content').removeAttribute('style');
-			fetchDogs();
-		}
-		
-		/* Toggle menubar background color and dropshadow on scroll */
-		function onScroll() {
-			if (document.body.scrollTop > 0) {
-				document.getElementById('menu-bar').classList.add('scrolled');
-			} else {
-				document.getElementById('menu-bar').classList.remove('scrolled');
-			}
-		}
-		
-		/* Open sidepanel and display selected dog image */
-		function togglePanel(element) {
-			if (element) {
-				var fullScreen = document.getElementById('dog-full-screen');
-				var image = element.firstElementChild;
-				fullScreen.src = image.src;
-				fullScreen.alt = image.alt;
-			}
-			document.getElementById('panel').classList.toggle('closed');
-		}
-		
-		/* Show list of images in staggered order */
-		function showImages(imageCount) {
-			for (var i = 1; i <= imageCount; i++) {
-				showImage(dogsCount, imageCount, i);
-			}
-		}
-		
-		/* Show image with timeout based on index */
-		function showImage(dogCount, imageCount, index) {
-			setTimeout(function() {
-				document.getElementById('dog-' + (dogCount - imageCount + index)).style.opacity = 1;
-			}, 150 * index);
-		}
-		
-		/* Fetch and parse dogs.json and load images into DOM */
-		function fetchDogs() {
-			var xmlhttp = new XMLHttpRequest();
-			
-			xmlhttp.onreadystatechange = function() {
-				var gallery = document.getElementById('dogs-gallery');
-				if (this.readyState == 4 && this.status == 200) {
-					
-					var dogs = JSON.parse(this.responseText).dogs;
-					var loadedCount = 0;
-					
-					for (var i = 0; i < dogs.length; i++) {
-						dogsCount++;
-						/* create image with source and alternate text */
-						var img = document.createElement('img');
-						img.onload = function() {
-							loadedCount++
-							if (loadedCount == dogs.length) {
-								/* display images once all dogs are loaded */
-								showImages(dogs.length);
+
+		<!-- Can be moved to main.js; left in index.html for readability in evaluation -->
+		<script>
+			var dogsCount = 0
+
+			/* Include HTML components from specified filepath */
+			function includeHTML() {
+				var z, i, elmnt, file, xhttp;
+				/* loop through a collection of all HTML elements */
+
+				z = document.getElementsByTagName('*');
+				for (i = 0; i < z.length; i++) {
+					elmnt = z[i];
+
+					/* search for elements with the "include" atrribute */
+					file = elmnt.getAttribute('include');
+					if (file) {
+						/* make an HTTP request using the attribute value as the file name */
+						xhttp = new XMLHttpRequest();
+						xhttp.onreadystatechange = function() {
+							if (this.readyState == 4) {
+								if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+								if (this.status == 404) {elmnt.innerHTML = 'Page not found.';}
+
+								/* remove the attribute, and call this function once more */
+								elmnt.removeAttribute('include');
+								includeHTML();
 							}
+						} 
+
+						xhttp.open('GET', file, true);
+						xhttp.send();
+
+						/* exit the function */
+						return;
+					}
+				}
+			}
+
+			/* Fetch dogs data on header load */
+			function onHeaderLoad() {
+				document.getElementById('main-content').removeAttribute('style');
+				fetchDogs();
+			}
+
+			/* Toggle menubar background color and dropshadow on scroll */
+			function onPageScroll() {
+				if (document.documentElement.scrollTop > 0) {
+					document.getElementById('menu-bar').classList.add('scrolled');
+				} else {
+					document.getElementById('menu-bar').classList.remove('scrolled');
+				}
+			}
+
+			/* Open sidepanel and display selected dog image */
+			function togglePanel(element) {
+				if (element) {
+					var fullScreen = document.getElementById('dog-full-screen');
+					var image = element.firstElementChild;
+					fullScreen.src = image.src;
+					fullScreen.alt = image.alt;
+				}
+				document.getElementById('panel').classList.toggle('closed');
+			}
+
+			/* Show list of images in staggered order */
+			function showImages(imageCount) {
+				for (var i = 1; i <= imageCount; i++) {
+					showImage(dogsCount, imageCount, i);
+				}
+			}
+
+			/* Show image with timeout based on index */
+			function showImage(dogCount, imageCount, index) {
+				setTimeout(function() {
+					document.getElementById('dog-' + (dogCount - imageCount + index)).style.opacity = 1;
+				}, 150 * index);
+			}
+
+			/* Fetch and parse dogs.json and load images into DOM */
+			function fetchDogs() {
+				var xmlhttp = new XMLHttpRequest();
+
+				xmlhttp.onreadystatechange = function() {
+					var gallery = document.getElementById('dogs-gallery');
+					if (this.readyState == 4 && this.status == 200) {
+
+						var dogs = JSON.parse(this.responseText).dogs;
+						var loadedCount = 0;
+
+						for (var i = 0; i < dogs.length; i++) {
+							dogsCount++;
+							/* create image with source and alternate text */
+							var img = document.createElement('img');
+							img.onload = function() {
+								loadedCount++
+								if (loadedCount == dogs.length) {
+									/* display images once all dogs are loaded */
+									showImages(dogs.length);
+								}
+							};
+							img.src = '.' + dogs[i].image;
+							img.alt = 'Dog ' + dogsCount;
+							img.id = 'dog-' + dogsCount;
+							img.className = 'ease';
+
+							/* load image into container with sidepanel functionality */
+							var div = document.createElement('div');
+							div.appendChild(img);
+							div.classList.add('ease-fast', 'dog');
+							div.onclick = function(){togglePanel(this)};
+
+							/* append container to gallery element */
+							gallery.appendChild(div);
 						};
-						img.src = '.' + dogs[i].image;
-						img.alt = 'Dog ' + dogsCount;
-						img.id = 'dog-' + dogsCount;
-						img.className = 'ease';
-						
-						/* load image into container with sidepanel functionality */
-						var div = document.createElement('div');
-						div.appendChild(img);
-						div.classList.add('ease-fast', 'dog');
-						div.onclick = function(){togglePanel(this)};
-						
-						/* append container to gallery element */
-						gallery.appendChild(div);
-					};
-				}
-				if (this.status == 400) {
-					gallery.innerHTML = 'Dogs could not be loaded.'
-				}
+					}
+					if (this.status == 400) {
+						gallery.innerHTML = 'Dogs could not be loaded.'
+					}
+				};
+
+				xmlhttp.open('GET', './assets/data/dogs.json', true);
+				xmlhttp.overrideMimeType('text/plain');
+				xmlhttp.send();
+				/*exit the function:*/
+				return;
+			}
+
+			includeHTML();
+
+			window.onscroll = function(){
+				onPageScroll();
 			};
-			
-			xmlhttp.open('GET', './assets/data/dogs.json', true);
-			xmlhttp.overrideMimeType('text/plain');
-			xmlhttp.send();
-			/*exit the function:*/
-			return;
-		}
-		
-		includeHTML();
-		
-		window.onscroll = function(){
-			onScroll()
-		};
-	</script>
-</body>
+		</script>
+	</body>
+</html>

@@ -11,9 +11,14 @@
   line-height: 1.5;
 }
 
+html {
+	height: 100%;
+}
+
 body {
 	color: #333; /* fallback for IE */
 	color: var(--color-secondary: #333);
+	height: 100%;
   margin: 0;
 }
 
@@ -37,7 +42,7 @@ a {
 /* Global Header */
 .global-header {
 	background: rgb(230, 228, 231);
-	height: 60%;
+	height: 100%;
 	overflow: hidden;
 	position: relative;
 	text-align: left;
@@ -68,7 +73,6 @@ a {
 .global-footer {
 	background: #151b26;
   color: white;
-  font-family: var(--font-sans);
 	padding: 24px 64px;
   text-align: center;
 }
@@ -189,16 +193,19 @@ a {
 	text-align: center;
 	width: 100%; 
 }
+#main-content > div:first-child {
+	height: 60%; /* included header component container */
+}
 .banner {
 	color: white;
 	background: #222b37;
-	padding: 8px 64px;
+	padding: 4px 64px;
 }
 
 /* Dogs Gallery */
 #dogs-gallery + a {
 	display: block;
-	margin-bottom: 32px;
+	margin: 32px 0;
 }
 .dog:hover {
 	cursor: pointer;
@@ -255,6 +262,16 @@ a {
 
 /* Handset */
 @media only screen and (max-width : 520px) {
+	body {
+		font-size: 0.9em;
+	}
+	.global-header-content,
+	.global-footer,
+	.banner {
+		padding-left: 32px;
+		padding-right: 32px;
+	}
+	
 	.justified-gallery > * {
 		max-width: calc(48%); /* fallback for mobile browsers with calc() issues */
 		max-width: calc(50% - 5px);
