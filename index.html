@@ -144,7 +144,8 @@
 							/* load image into container with sidepanel functionality */
 							var div = document.createElement('div');
 							div.appendChild(img);
-							div.classList.add('ease-fast', 'dog');
+							div.classList.add('ease-fast');
+							div.classList.add('dog'); // IE support
 							div.onclick = function(){togglePanel(this)};
 
 							/* append container to gallery element */
