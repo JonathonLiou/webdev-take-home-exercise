@@ -60,7 +60,7 @@
 
 <body>
 	<div id="panel" class="closed" style="border-right: 1px solid #d8d8d8;">
-		<img id="fullscreen" alt="Full Screen" style="max-width: 100%; max-height: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+		<img id="fullscreen" alt="Full Screen" style="max-width: 100%; max-height: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"/>
 		<!--div onclick="togglePanel()" style="position:absolute;right:0;height:100%;width:48px;background:#796eff;">
 		
 			<div style="position:absolute; top: 50%;left:50%;transform:translate(-50%, -50%);">❬</div>
@@ -69,7 +69,9 @@
 		
 		<!--tap to close?-->
 		
-		<div class="close-button" onclick="togglePanel()" style="top: 0;position:absolute;"><div class="chevron"></div></div>
+		<div class="close-button" onclick="togglePanel()" style="top: 0;position:absolute;">
+			<div class="chevron ease-fast"></div>
+		</div>
 		
 		<!--div style="top: 0; height: 48px; width:100%;position:absolute;background:white;border-bottom:1px solid #dadada;">
 			<div onclick="togglePanel()">X</div>
@@ -81,7 +83,7 @@
 	<!--div id="header"></div>
 	<div id="footer"></div-->
 	
-	<div id="main-content">
+	<div id="main-content" style="text-align: center;width:100%;">
 		
 		<!--div style="background:rgb(230,228,231); height:60%;position:relative;">
 			<div style="height:100%;float:right;background:rgb(238,236,239);position:absolute;right:0;width:20%;"></div>
@@ -90,13 +92,13 @@
 		</div-->
 		
 		<div include="./assets/snippets/header.html"></div>
-		<div id="banner" style="padding: 12px 64px;background: #222b37; color: white;text-align:center;">
+		<div id="banner" style="padding: 12px 64px;background: #222b37; color: white;">
 			<h3>Asana is a proud partner of [SHELTER NAME] with over 2000 pets looking for a new place to call home.</h3>
 		</div>
 		<!--div style="height:48px;background:purple;width:100%;"></div-->
 		<div id="list" class="justified-gallery justified-gallery-margin"></div>
 		
-		<div style="text-align: center;" onclick="fetchDogs()">See More</div>
+		<a href="javascript:void(0);" onclick="fetchDogs()">See More</a>
 		<div include="./assets/snippets/footer.html"></div>
 	</div>
 	
@@ -149,7 +151,7 @@
 						
 						var div = document.createElement('div');
 						div.appendChild(img);
-						div.classList.add('imgContainer');
+						div.classList.add('ease-fast', 'imgContainer');
 						div.onclick = function(){togglePanel(this)};
 
 						list.appendChild(div);
@@ -160,6 +162,16 @@
 			xmlhttp.open("GET", "./assets/data/dogs.json", true);
 			xmlhttp.overrideMimeType("text/plain");
 			xmlhttp.send();
+			
+			window.onscroll = function() {myFunction()};
+
+			function myFunction() {
+				if (document.body.scrollTop > 0) {
+					document.getElementById("toolbar").classList.add("scroll");
+				} else {
+					document.getElementById("toolbar").classList.remove("scroll");
+				}
+			}
 		}
 		
 		fetchDogs();
