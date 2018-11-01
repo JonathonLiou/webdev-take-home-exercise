@@ -274,3 +274,10 @@ a {
 		padding-right: 32px;
 	}
 }
+
+/* IE Grievances */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+	.justified-gallery > * {
+		max-width: 100%; /* fallback for IE calc() issues; better to display image 100% than 50% stacked vertically */
+	}
+}
