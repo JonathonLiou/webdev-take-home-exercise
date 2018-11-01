@@ -12,7 +12,7 @@
 	
 	<!-- Full Screen Image Panel -->
 	<div id="panel" class="closed ease">
-		<img id="dog-lightbox" class="center"/>		
+		<img id="dog-full-screen" class="center"/>		
 		<div class="button" onclick="togglePanel()">
 			<div class="chevron ease-fast"></div>
 		</div>
@@ -38,109 +38,124 @@
 	<script>
 		var dogsCount = 0
 		
+		/* Include HTML components from specified filepath */
 		function includeHTML() {
 			var z, i, elmnt, file, xhttp;
-			/*loop through a collection of all HTML elements:*/
-			z = document.getElementsByTagName("*");
+			/* loop through a collection of all HTML elements */
+			
+			z = document.getElementsByTagName('*');
 			for (i = 0; i < z.length; i++) {
 				elmnt = z[i];
-				/*search for elements with a certain atrribute:*/
-				file = elmnt.getAttribute("include");
+				
+				/* search for elements with the "include" atrribute */
+				file = elmnt.getAttribute('include');
 				if (file) {
-					/*make an HTTP request using the attribute value as the file name:*/
+					/* make an HTTP request using the attribute value as the file name */
 					xhttp = new XMLHttpRequest();
 					xhttp.onreadystatechange = function() {
 						if (this.readyState == 4) {
 							if (this.status == 200) {elmnt.innerHTML = this.responseText;}
-							if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
-							/*remove the attribute, and call this function once more:*/
-							elmnt.removeAttribute("include");
+							if (this.status == 404) {elmnt.innerHTML = 'Page not found.';}
+							
+							/* remove the attribute, and call this function once more */
+							elmnt.removeAttribute('include');
 							includeHTML();
 						}
 					} 
-					xhttp.open("GET", file, true);
+					
+					xhttp.open('GET', file, true);
 					xhttp.send();
-					/*exit the function:*/
+					
+					/* exit the function */
 					return;
 				}
 			}
 		}
 		
+		/* Fetch dogs data on header load */
 		function onHeaderLoad() {
 			document.getElementById('main-content').removeAttribute('style');
 			fetchDogs();
 		}
 		
+		/* Toggle menubar background color and dropshadow on scroll */
 		function onScroll() {
 			if (document.body.scrollTop > 0) {
-				document.getElementById("menu-bar").classList.add("scrolled");
+				document.getElementById('menu-bar').classList.add('scrolled');
 			} else {
-				document.getElementById("menu-bar").classList.remove("scrolled");
+				document.getElementById('menu-bar').classList.remove('scrolled');
 			}
 		}
 		
+		/* Open sidepanel and display selected dog image */
 		function togglePanel(element) {
 			if (element) {
-				var lightbox = document.getElementById('dog-lightbox');
+				var fullScreen = document.getElementById('dog-full-screen');
 				var image = element.firstElementChild;
-				lightbox.src = image.src;
-				lightbox.alt = image.alt;
+				fullScreen.src = image.src;
+				fullScreen.alt = image.alt;
 			}
 			document.getElementById('panel').classList.toggle('closed');
 		}
 		
+		/* Show list of images in staggered order */
 		function showImages(imageCount) {
 			for (var i = 1; i <= imageCount; i++) {
 				showImage(dogsCount, imageCount, i);
 			}
 		}
 		
+		/* Show image with timeout based on index */
 		function showImage(dogCount, imageCount, index) {
 			setTimeout(function() {
-				document.getElementById("dog-" + (dogCount - imageCount + index)).style.opacity = 1;
+				document.getElementById('dog-' + (dogCount - imageCount + index)).style.opacity = 1;
 			}, 150 * index);
 		}
 		
+		/* Fetch and parse dogs.json and load images into DOM */
 		function fetchDogs() {
 			var xmlhttp = new XMLHttpRequest();
+			
 			xmlhttp.onreadystatechange = function() {
-				var gallery = document.getElementById("dogs-gallery");
+				var gallery = document.getElementById('dogs-gallery');
 				if (this.readyState == 4 && this.status == 200) {
-					var dogs = JSON.parse(this.responseText).dogs;
 					
+					var dogs = JSON.parse(this.responseText).dogs;
 					var loadedCount = 0;
 					
 					for (var i = 0; i < dogs.length; i++) {
 						dogsCount++;
-
-						var img = document.createElement("img");
+						/* create image with source and alternate text */
+						var img = document.createElement('img');
 						img.onload = function() {
 							loadedCount++
 							if (loadedCount == dogs.length) {
+								/* display images once all dogs are loaded */
 								showImages(dogs.length);
 							}
 						};
-
-						img.src = "." + dogs[i].image;
-						img.alt = "Dog " + dogsCount;
-						img.id = "dog-" + dogsCount;
-						img.className = "ease";
+						img.src = '.' + dogs[i].image;
+						img.alt = 'Dog ' + dogsCount;
+						img.id = 'dog-' + dogsCount;
+						img.className = 'ease';
 						
+						/* load image into container with sidepanel functionality */
 						var div = document.createElement('div');
 						div.appendChild(img);
 						div.classList.add('ease-fast', 'dog');
 						div.onclick = function(){togglePanel(this)};
-
+						
+						/* append container to gallery element */
 						gallery.appendChild(div);
 					};
 				}
 				if (this.status == 400) {
-					gallery.innerHTML = "Dogs could not be loaded."
+					gallery.innerHTML = 'Dogs could not be loaded.'
 				}
 			};
 			
-			xmlhttp.open("GET", "./assets/data/dogs.json", true);
-			xmlhttp.overrideMimeType("text/plain");
+			xmlhttp.open('GET', './assets/data/dogs.json', true);
+			xmlhttp.overrideMimeType('text/plain');
 			xmlhttp.send();
 			/*exit the function:*/
 			return;
